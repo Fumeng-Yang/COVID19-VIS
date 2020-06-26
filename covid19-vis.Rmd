@@ -32,6 +32,7 @@ library(tidyverse)
 library(ggthemes)
 library(extrafont)
 library(rmdformats)
+library(emdbook) #lseq
 ```
 
 ```{r, include=FALSE}
@@ -198,7 +199,7 @@ df_states <- fread("https://covidtracking.com/api/v1/states/daily.csv") %>%
                mutate(date = as.Date(as.character(date), "%Y%m%d"))
 
 tableau10 <- as.list(ggthemes_data[["tableau"]][["color-palettes"]][["regular"]][[1]][,2])$value
-first_day <- as.Date("2020-03-15") # to select a dat
+first_day <- as.Date("2020-03-15") # to select a date
 today <-  as.Date(toString(max(df_states$date)))
   
 kable(head(df_states, n = 3))
@@ -284,12 +285,26 @@ df_states %>%
     + geom_smooth(mapping = aes(x = date, y = positiveIncrease), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) %>%
     + geom_line(mapping = aes(x = date, y = positiveIncrease, color = trend_color), alpha = 0.7, size = LINE_SIZE) %>%
     + geom_point(mapping = aes(x = date, y = positiveIncrease, color = trend_color), size = 1) %>%
-        + scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) %>%
+    + scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) %>%
     + scale_colour_tableau() %>%
     + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
-    + xlab("Date") + ylab("") + ggtitle("US - positiveIncrease by state, colored by trend of last 21 days")
+    + xlab("Date") + ylab("") + ggtitle("US - positiveIncrease by state, colored by the trend of last 21 days")
 ```
-
+   
+```{r fig.height=20, fig.width = 15, warning=FALSE,  message=FALSE}
+df_states %>% 
+    inner_join(df_colors, by = "state") %>%
+    mutate(positiveIncreasePerMillion = positiveIncrease / population * 1000000)%>%
+    ggplot() %>%
+    + geom_smooth(mapping = aes(x = date, y = positiveIncreasePerMillion), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) %>%
+    + geom_line(mapping = aes(x = date, y = positiveIncreasePerMillion, color = trend_color), alpha = 0.7, size = LINE_SIZE) %>%
+    + geom_point(mapping = aes(x = date, y = positiveIncreasePerMillion, color = trend_color), size = 1) %>%
+    + scale_y_continuous(limits = c(0, 600), breaks = seq(0, 600, by = 150)) %>%
+    + scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) %>%
+    + scale_colour_tableau() %>%
+    + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
+    + xlab("Date") + ylab("") + ggtitle("US - positiveIncreasePerMillion by state, colored by the trend of last 21 days")
+```
 
 ##  US - hospitalizedCurrently by state
 ```{r fig.height=20, fig.width = 15, warning=FALSE,  message=FALSE}
@@ -297,8 +312,8 @@ df_states %>%
 df_states %>% 
     ggplot() %>%
     + geom_smooth(mapping = aes(x = date, y = hospitalizedCurrently), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) %>%
-    + geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) %>%
-    + geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], size = 1) %>%
+    + geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[3], size = LINE_SIZE) %>%
+    + geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[3], size = 1) %>%
     + scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) %>%
     + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
     + xlab("Date") + ylab("") + ggtitle("US - hospitalizedCurrently by state")
@@ -316,9 +331,9 @@ df_states %>%
     + geom_line(mapping = aes(x = testedPopulationRate, y = testPositiveRate), alpha = 0.7, color = tableau10[4], size = LINE_SIZE) %>%
     + geom_point(mapping = aes(x = testedPopulationRate, y = testPositiveRate), color = tableau10[4], size = 1) %>%
     + scale_x_continuous(limits = c(0, 0.20), breaks = seq(0, 1, by = 0.01)) %>%
-    + scale_y_continuous(limits = c(-.25, 1.25), breaks = seq(0, 1, by = 0.2)) %>%
+    + scale_y_continuous(limits = c(-.2, 1.25), breaks = seq(0, 1, by = 0.1)) %>%
     + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
-    + xlab("testPositiveRate") + ylab("testedPopulationRate") + ggtitle("US - testPositiveRate against testedPopulationRate")
+    + xlab("testedPopulationRate") + ylab("testPositiveRate") + ggtitle("US - testPositiveRate against testedPopulationRate")
 ```
 
 ## US - death per 10k by state
