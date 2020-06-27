@@ -349,14 +349,30 @@ df_states %>%
 ## US - testPositiveRate against testedPopulationRate
 
 ```{r fig.height=20, fig.width = 15, warning=FALSE,  message=FALSE}
-df_states %>% 
+
+df_pr <- df_states %>% 
     mutate(testPositiveRate = positiveIncrease / totalTestResultsIncrease, testedPopulationRate = totalTestResults / population) %>%
-    ggplot() %>%
+    filter(testPositiveRate > 0 & testPositiveRate < 1) # rm buggy data to allow log scales
+  
+df_pr_colors <-  df_pr %>%
+  group_by(state)%>%
+  arrange(date, .by_group = TRUE) %>%
+  slice_tail(n = num_lag) %>% # last N days
+  summarise(trend_coef = find_coef(date, testPositiveRate)) %>% 
+  mutate(trend_color = ifelse(trend_coef > 0, "increasing", ifelse(trend_coef < 0, "decreasing", "stable"))) %>% 
+  ungroup()%>%
+  replace(is.na(.), 0) %>%
+  select(state, trend_coef, trend_color) 
+
+df_pr %>%
+ inner_join(df_pr_colors, by = "state") %>%
+ ggplot() %>%
     + geom_smooth(mapping = aes(x = testedPopulationRate, y = testPositiveRate), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) %>%
-    + geom_line(mapping = aes(x = testedPopulationRate, y = testPositiveRate), alpha = 0.7, color = tableau10[4], size = LINE_SIZE) %>%
-    + geom_point(mapping = aes(x = testedPopulationRate, y = testPositiveRate), color = tableau10[4], size = 1) %>%
-    + scale_x_continuous(limits = c(0, 0.20), breaks = seq(0, 1, by = 0.01)) %>%
-    + scale_y_continuous(limits = c(-.2, 1.25), breaks = seq(0, 1, by = 0.1)) %>%
+    + geom_line(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), alpha = 0.7, size = LINE_SIZE) %>%
+    + geom_point(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), size = 1) %>%
+    + scale_x_continuous(limits = c(0, 0.20), breaks = seq(0, 0.5, by = 0.01)) %>%
+    + scale_y_continuous(limits = c(0.001, 1), trans = 'log10', breaks = c(0.001, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1)) %>%
+    + scale_colour_tableau() %>%
     + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
     + xlab("testedPopulationRate") + ylab("testPositiveRate") + ggtitle("US - testPositiveRate against testedPopulationRate")
 ```
