@@ -208,14 +208,14 @@ kable(head(df_states, n = 3))
 ```{r fig.height = 8, fig.width = 10, warning=FALSE,  message=FALSE}
 df_states %>% filter(state == "RI") %>%
     ggplot() %>%
-    + geom_label(x = first_day, y = 850, color = "darkgray", label = "total positive", size = 2, hjust = 0) %>%
-    + geom_text(mapping = aes(x = date, y = 950, label = positive), color = "darkgray", size = 2, angle = 90, hjust = 0) %>%
-    + geom_label(x = first_day, y = 800, color = "black", label = "death", size = 2, hjust = 0) %>%
-    + geom_label(x = first_day, y = 750, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) %>%
-    + geom_label(x = first_day, y = 700, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) %>%
-    + geom_line(mapping = aes(x = date, y = death), alpha = 0.7, color = "black", size = LINE_SIZE) %>%
-    + geom_text(mapping = aes(x = date - 0.5, y = death + 10, label = death), color = "black", size = 1.5) %>%
-    + geom_point(mapping = aes(x = date, y = death), color = "black", shape = 10) %>%
+    + geom_label(x = first_day, y = 650, color = "darkgray", label = "total positive", size = 2, hjust = 0) %>%
+    + geom_text(mapping = aes(x = date, y = 600, label = positive), color = "darkgray", size = 2, angle = 90, hjust = 0) %>%
+    #+ geom_label(x = first_day, y = 800, color = "black", label = "death", size = 2, hjust = 0) %>%
+    + geom_label(x = first_day, y = 550, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) %>%
+    + geom_label(x = first_day, y = 500, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) %>%
+    # + geom_line(mapping = aes(x = date, y = death), alpha = 0.7, color = "black", size = LINE_SIZE) %>%
+    # + geom_text(mapping = aes(x = date - 0.5, y = death + 10, label = death), color = "black", size = 1.5) %>%
+    # + geom_point(mapping = aes(x = date, y = death), color = "black", shape = 10) %>%
     + geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) %>%
     + geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 10, label = hospitalizedCurrently), color =  tableau10[1], size = 1.5) %>%
     + geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], shape = 15) %>%
@@ -238,8 +238,8 @@ df_states %>% group_by(date) %>%
     summarise(positiveIncrease = sum(positiveIncrease), hospitalizedCurrently = sum(hospitalizedCurrently), total = sum(positive)) %>% 
     ungroup() %>%
     ggplot() %>%
-    + geom_label(x = first_day, y = 60000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) %>%
-    + geom_text(mapping = aes(x = date, y = 63000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) %>%
+    + geom_label(x = first_day, y = 68000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) %>%
+    + geom_text(mapping = aes(x = date, y = 70000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) %>%
     + geom_label(x = first_day, y = 50000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) %>%
     + geom_label(x = first_day, y = 55000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) %>%
     + geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) %>%
@@ -346,7 +346,7 @@ df_states %>%
 
 
 
-## US - testPositiveRate against testedPopulationRate
+## US - dailyTestPositiveRate against overallTestedPopulationRate
 
 ```{r fig.height=20, fig.width = 15, warning=FALSE,  message=FALSE}
 
@@ -370,11 +370,11 @@ df_pr %>%
     + geom_smooth(mapping = aes(x = testedPopulationRate, y = testPositiveRate), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) %>%
     + geom_line(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), alpha = 0.7, size = LINE_SIZE) %>%
     + geom_point(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), size = 1) %>%
-    + scale_x_continuous(limits = c(0, 0.20), breaks = seq(0, 0.5, by = 0.01)) %>%
+    + scale_x_continuous(limits = c(0, 0.30), breaks = seq(0, 0.5, by = 0.02)) %>%
     + scale_y_continuous(limits = c(0.001, 1), trans = 'log10', breaks = c(0.001, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1)) %>%
     + scale_colour_tableau() %>%
     + facet_wrap(state ~ ., ncol = 6, scales = "free")  %>%
-    + xlab("testedPopulationRate") + ylab("testPositiveRate") + ggtitle("US - testPositiveRate against testedPopulationRate")
+    + xlab("dailyTestPositiveRate") + ylab("overallTestedPopulationRate") + ggtitle("US - dailyTestPositiveRate against overallTestedPopulationRate")
 ```
 
 ## US - death per 10k by state
