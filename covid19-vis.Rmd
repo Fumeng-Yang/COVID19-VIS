@@ -33,6 +33,7 @@ library(ggthemes)
 library(extrafont)
 library(rmdformats)
 library(ggTimeSeries) 
+library(RColorBrewer)
 ```
 
 ```{r, include=FALSE}
@@ -56,11 +57,15 @@ LINE_COLOR <- "#444444"
 LINE_COLOR_LIGHT <- "#dddddd"
 
 
+# Define the number of colors you want
+nb.cols <- 25
+mycolors <- colorRampPalette(brewer.pal(8, "Set2"))(nb.cols)
+
 PALETTE <- c("#6298f5", "#ed80ae", "#faa970", "#71bf76", "#999999") 
 TABEALU20 <- c("#4E79A7", "#A0CBE8", "#F28E2B", "#FFBE7D", "#59A14F",
 "#8CF17D", "#B6992D", "#EDC948", "#499894", "#76B7B2",
 "#E15759", "#FF9D9A", "#79706E", "#BAB0AC", "#D37295",
-"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6")
+"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6", "#dddddd", "steelblue")
 
 DIFF_COLOR <- "#877991"
 GOLDEN_COLOR <- "#e8bb3f"
@@ -238,10 +243,10 @@ df_states %>% group_by(date) %>%
     summarise(positiveIncrease = sum(positiveIncrease), hospitalizedCurrently = sum(hospitalizedCurrently), total = sum(positive)) %>% 
     ungroup() %>%
     ggplot() + 
-     geom_label(x = first_day, y = 80000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
-     geom_text(mapping = aes(x = date, y = 80000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
-     geom_label(x = first_day, y = 70000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
-     geom_label(x = first_day, y = 75000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 120000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
+     geom_text(mapping = aes(x = date, y = 120000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
+     geom_label(x = first_day, y = 100000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 105000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
      geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) +
      geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 1000, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) +
      geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], shape = 15) +
@@ -261,6 +266,23 @@ df_states %>% group_by(date) %>%
 If a state has been a top 3 contributor
 
 ```{r fig.height = 6, fig.width=10, warning=FALSE,  message=FALSE}
+
+c25 <- c(
+  "dodgerblue2", "#E31A1C", # red
+  "green4",
+  "#6A3D9A", # purple
+  "#FF7F00", # orange
+  "black", "gold1",
+  "skyblue2", "#FB9A99", # lt pink
+  "palegreen2",
+  "#CAB2D6", # lt purple
+  "#FDBF6F", # lt orange
+  "gray70", "khaki2",
+  "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
+  "darkturquoise", "green1", "yellow4", "yellow3",
+  "darkorange4", "brown"
+)
+
 as_top <- df_states %>%
     filter(date > first_day)%>%
     mutate(str_date = as.character(date))%>%
@@ -276,8 +298,8 @@ df_states %>%
     ggplot() +
       stat_steamgraph(mapping = aes(x = date, y = positiveIncrease, group = state, fill = state))  +
       scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week"))  +
-      scale_y_continuous(breaks = seq(-20000, 20000, by = 5000), labels = c("20000", "15000", "10000", "5000", "0", "5000", "10000", "15000", "20000")) +
-      scale_fill_tableau(palette = "Tableau 20") +
+      scale_y_continuous(breaks = seq(-30000, 30000, by = 5000), labels = c("30000","25000","20000", "15000", "10000", "5000", "0", "5000", "10000", "15000", "20000", "24000","30000")) +
+      scale_fill_manual(values = TABEALU20) +
       xlab("Date") + ylab("positiveIncrease") + ggtitle("If a state was a top-3 contributor on a day")
 ```  
 
