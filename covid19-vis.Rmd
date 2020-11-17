@@ -243,10 +243,10 @@ df_states %>% group_by(date) %>%
     summarise(positiveIncrease = sum(positiveIncrease), hospitalizedCurrently = sum(hospitalizedCurrently), total = sum(positive)) %>% 
     ungroup() %>%
     ggplot() + 
-     geom_label(x = first_day, y = 120000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
-     geom_text(mapping = aes(x = date, y = 120000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
-     geom_label(x = first_day, y = 100000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
-     geom_label(x = first_day, y = 105000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 150000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
+     geom_text(mapping = aes(x = date, y = 150000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
+     geom_label(x = first_day, y = 120000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 125000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
      geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) +
      geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 1000, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) +
      geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], shape = 15) +
