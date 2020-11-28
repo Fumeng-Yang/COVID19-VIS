@@ -65,7 +65,7 @@ PALETTE <- c("#6298f5", "#ed80ae", "#faa970", "#71bf76", "#999999")
 TABEALU20 <- c("#4E79A7", "#A0CBE8", "#F28E2B", "#FFBE7D", "#59A14F",
 "#8CF17D", "#B6992D", "#EDC948", "#499894", "#76B7B2",
 "#E15759", "#FF9D9A", "#79706E", "#BAB0AC", "#D37295",
-"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6", "#dddddd", "steelblue")
+"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6", "#dddddd", "steelblue", "yellow")
 
 DIFF_COLOR <- "#877991"
 GOLDEN_COLOR <- "#e8bb3f"
@@ -280,7 +280,7 @@ c25 <- c(
   "gray70", "khaki2",
   "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
   "darkturquoise", "green1", "yellow4", "yellow3",
-  "darkorange4", "brown"
+  "darkorange4", "brown", "salmon", "pink"
 )
 
 as_top <- df_states %>%
