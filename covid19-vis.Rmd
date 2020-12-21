@@ -65,7 +65,7 @@ PALETTE <- c("#6298f5", "#ed80ae", "#faa970", "#71bf76", "#999999")
 TABEALU20 <- c("#4E79A7", "#A0CBE8", "#F28E2B", "#FFBE7D", "#59A14F",
 "#8CF17D", "#B6992D", "#EDC948", "#499894", "#76B7B2",
 "#E15759", "#FF9D9A", "#79706E", "#BAB0AC", "#D37295",
-"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6", "#dddddd", "steelblue", "yellow")
+"#FABFD2", "#B07AA1", "#D4A6C8", "#9D7660", "#D7B5A6", "#dddddd", "steelblue", "yellow", "#78AD9A")
 
 DIFF_COLOR <- "#877991"
 GOLDEN_COLOR <- "#e8bb3f"
@@ -213,21 +213,21 @@ kable(head(df_states, n = 3))
 ```{r fig.height = 6, fig.width = 12, warning=FALSE,  message=FALSE}
 df_states %>% filter(state == "RI") %>%
     ggplot() + 
-      geom_label(x = first_day, y = 650, color = "darkgray", label = "total positive", size = 2, hjust = 0) + 
-      geom_text(mapping = aes(x = date, y = 600, label = positive), color = "darkgray", size = 2, angle = 90, hjust = 0)+ 
+      geom_label(x = first_day, y = 2000, color = "darkgray", label = "total positive", size = 2, hjust = 0) + 
+      geom_text(mapping = aes(x = date, y = 2100, label = positive), color = "darkgray", size = 2, angle = 90, hjust = 0)+ 
       #geom_label(x = first_day, y = 800, color = "black", label = "death", size = 2, hjust = 0) + 
-      geom_label(x = first_day, y = 550, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) + 
-      geom_label(x = first_day, y = 500, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) + 
+      geom_label(x = first_day, y = 2000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) + 
+      geom_label(x = first_day, y = 1900, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) + 
       # geom_line(mapping = aes(x = date, y = death), alpha = 0.7, color = "black", size = LINE_SIZE) + 
       # geom_text(mapping = aes(x = date - 0.5, y = death + 10, label = death), color = "black", size = 1.5) + 
       # geom_point(mapping = aes(x = date, y = death), color = "black", shape = 10) + 
       geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) + 
-      geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 10, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) + 
+      geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 20, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) + 
       geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], shape = 15) + 
       geom_line(mapping = aes(x = date, y = positiveIncrease), alpha = 0.7, color = tableau10[2], size = LINE_SIZE) + 
-      geom_text(mapping = aes(x = date - 0.5, y = positiveIncrease + 10, label = positiveIncrease), color =  tableau10[2], size = 1.25)+ 
+      geom_text(mapping = aes(x = date - 0.5, y = positiveIncrease + 20, label = positiveIncrease), color =  tableau10[2], size = 1.25)+ 
       geom_point(mapping = aes(x = date, y = positiveIncrease), color = tableau10[2]) + 
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "day")) + 
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) + 
       xlab("Date") + ylab("") + ggtitle("RI")
 
 
@@ -243,17 +243,17 @@ df_states %>% group_by(date) %>%
     summarise(positiveIncrease = sum(positiveIncrease), hospitalizedCurrently = sum(hospitalizedCurrently), total = sum(positive)) %>% 
     ungroup() %>%
     ggplot() + 
-     geom_label(x = first_day, y = 150000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
-     geom_text(mapping = aes(x = date, y = 150000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
-     geom_label(x = first_day, y = 120000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
-     geom_label(x = first_day, y = 125000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 270000, color = "darkgray", label = "total positive: ", size = 2, hjust = 0) +
+     geom_text(mapping = aes(x = date, y = 260000, label = total), color = "darkgray", size = 2, angle = 90, hjust = 0) +
+     geom_label(x = first_day, y = 250000, color = tableau10[1], label = "hospitalizedCurrently", size = 2, hjust = 0) +
+     geom_label(x = first_day, y = 240000, color = tableau10[2], label = "positiveIncrease", size = 2, hjust = 0) +
      geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[1], size = LINE_SIZE) +
-     geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 1000, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) +
+     geom_text(mapping = aes(x = date - 0.5, y = hospitalizedCurrently + 5000, label = hospitalizedCurrently), color =  tableau10[1], size = 1.25) +
      geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[1], shape = 15) +
      geom_line(mapping = aes(x = date, y = positiveIncrease), alpha = 0.7, color = tableau10[2], size = LINE_SIZE) +
-     geom_text(mapping = aes(x = date - 0.5, y = positiveIncrease + 1000, label = positiveIncrease), color =  tableau10[2], size = 1.25) +
+     geom_text(mapping = aes(x = date - 0.5, y = positiveIncrease + 5000, label = positiveIncrease), color =  tableau10[2], size = 1.25) +
      geom_point(mapping = aes(x = date, y = positiveIncrease), color = tableau10[2]) +
-     scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "day")) +
+     scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
      xlab("Date") + ylab("") + ggtitle("US - positiveIncrease & hospitalizedCurrently")
 
 
@@ -262,33 +262,16 @@ df_states %>% group_by(date) %>%
 
 
    
-##  US - daily top-3 contributors
-If a state has been a top 3 contributor
+##  US - daily top-2 contributors
+If a state has been a top 2 contributor
 
 ```{r fig.height = 6, fig.width=10, warning=FALSE,  message=FALSE}
-
-c25 <- c(
-  "dodgerblue2", "#E31A1C", # red
-  "green4",
-  "#6A3D9A", # purple
-  "#FF7F00", # orange
-  "black", "gold1",
-  "skyblue2", "#FB9A99", # lt pink
-  "palegreen2",
-  "#CAB2D6", # lt purple
-  "#FDBF6F", # lt orange
-  "gray70", "khaki2",
-  "maroon", "orchid1", "deeppink1", "blue1", "steelblue4",
-  "darkturquoise", "green1", "yellow4", "yellow3",
-  "darkorange4", "brown", "salmon", "pink"
-)
-
 as_top <- df_states %>%
     filter(date > first_day)%>%
     mutate(str_date = as.character(date))%>%
     group_by(str_date) %>%
     arrange(positiveIncrease, by_group = TRUE)%>%
-    slice_tail(n = 3) %>%
+    slice_tail(n = 2) %>%
     ungroup() %>%
     summarise(unique(state))
 as_top <- unlist(as_top)
@@ -298,9 +281,9 @@ df_states %>%
     ggplot() +
       stat_steamgraph(mapping = aes(x = date, y = positiveIncrease, group = state, fill = state))  +
       scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week"))  +
-      scale_y_continuous(breaks = seq(-30000, 30000, by = 5000), labels = c("30000","25000","20000", "15000", "10000", "5000", "0", "5000", "10000", "15000", "20000", "24000","30000")) +
+      scale_y_continuous(breaks = seq(-60000, 60000, by = 10000), labels = c("60000","50000","400000", "30000", "20000", "10000", "0", "10000", "20000", "30000", "40000", "50000","60000")) +
       scale_fill_manual(values = TABEALU20) +
-      xlab("Date") + ylab("positiveIncrease") + ggtitle("If a state was a top-3 contributor on a day")
+      xlab("Date") + ylab("positiveIncrease") + ggtitle("If a state was a top-2 contributor on a day")
 ```  
 
 ##  US - positiveIncrease by state
@@ -331,7 +314,7 @@ df_states %>%
       geom_smooth(mapping = aes(x = date, y = positiveIncrease), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) +
       geom_line(mapping = aes(x = date, y = positiveIncrease, color = trend_color), alpha = 0.7, size = LINE_SIZE) +
       geom_point(mapping = aes(x = date, y = positiveIncrease, color = trend_color), size = 1) +
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
       scale_colour_tableau() +
       facet_wrap(state ~ ., ncol = 6, scales = "free") +
       xlab("Date") + ylab("") + ggtitle("US - positiveIncrease by state, colored by the trend of last 21 days")
@@ -345,8 +328,8 @@ df_states %>%
       geom_smooth(mapping = aes(x = date, y = positiveIncreasePerMillion), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) +
       geom_line(mapping = aes(x = date, y = positiveIncreasePerMillion, color = trend_color), alpha = 0.7, size = LINE_SIZE) +
       geom_point(mapping = aes(x = date, y = positiveIncreasePerMillion, color = trend_color), size = 1) +
-      scale_y_continuous(limits = c(0, 800), breaks = seq(0, 800, by = 200)) +
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
+      scale_y_continuous(limits = c(0, 1500), breaks = seq(0, 1500, by = 500)) +
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
       scale_colour_tableau() +
       facet_wrap(state ~ ., ncol = 6, scales = "free")  +
       xlab("Date") + ylab("") + ggtitle("US - positiveIncreasePerMillion by state, colored by the trend of last 21 days")
@@ -361,7 +344,7 @@ df_states %>%
       geom_smooth(mapping = aes(x = date, y = hospitalizedCurrently), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) +
       geom_line(mapping = aes(x = date, y = hospitalizedCurrently), alpha = 0.7, color = tableau10[3], size = LINE_SIZE) +
       geom_point(mapping = aes(x = date, y = hospitalizedCurrently), color = tableau10[3], size = 1) +
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
       facet_wrap(state ~ ., ncol = 6, scales = "free") +
       xlab("Date") + ylab("") + ggtitle("US - hospitalizedCurrently by state")
 ```
@@ -406,8 +389,8 @@ df_states %>%
     ggplot() +
      geom_line(mapping = aes(x = date, y = deathPer10K), alpha = 0.7, color = tableau10[3], size = LINE_SIZE) +
      geom_point(mapping = aes(x = date, y = deathPer10K), color = tableau10[3], size = 1) +
-     scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
-     scale_y_continuous(limits = c(0, 20), breaks = seq(0, 20, by = 5)) +
+     scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
+     scale_y_continuous(limits = c(0, 50), breaks = seq(0, 50, by = 10)) +
      facet_wrap(state ~ ., ncol = 6, scales = "free")  +
      xlab("date") + ylab("death per 10k") + ggtitle("US - death per 10k by state")
 ```
@@ -420,8 +403,8 @@ df_states %>%
     ggplot() +
       geom_line(mapping = aes(x = date, y = positivePerOneK), alpha = 0.7, color = tableau10[4], size = LINE_SIZE) +
       geom_point(mapping = aes(x = date, y = positivePerOneK), color = tableau10[4], size = 1) +
-      scale_y_continuous(limits = c(0, 25), breaks = seq(0, 25, by = 5)) +
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
+      scale_y_continuous(limits = c(0, 150), breaks = seq(0, 150, by = 30)) +
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
       facet_wrap(state ~ ., ncol = 6, scales = "free") +
       xlab("date") + ylab("") + ggtitle("US - positivePerOneK by state")
 ```
@@ -435,7 +418,7 @@ df_states %>%
       geom_smooth(mapping = aes(x = date, y = testResultsIncrease), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) +
       geom_line(mapping = aes(x = date, y = testResultsIncrease), alpha = 0.7, color = tableau10[7], size = LINE_SIZE) +
       geom_point(mapping = aes(x = date, y = testResultsIncrease), color = tableau10[7], size = 1) +
-      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "week")) +
+      scale_x_date(limits = c(first_day, today), breaks = seq(first_day, today, by = "month")) +
       facet_wrap(state ~ ., ncol = 6, scales = "free")  +
       xlab("date") + ylab("testResultsIncrease") + ggtitle("US - testResultsIncrease by state")
 ```
