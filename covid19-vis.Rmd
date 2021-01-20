@@ -276,6 +276,8 @@ as_top <- df_states %>%
     summarise(unique(state))
 as_top <- unlist(as_top)
     
+
+  
 df_states %>%
     filter(state %in% as_top) %>%
     ggplot() +
@@ -359,6 +361,8 @@ df_pr <- df_states %>%
     mutate(testPositiveRate = positiveIncrease / totalTestResultsIncrease, testedPopulationRate = totalTestResults / population) %>%
     filter(testPositiveRate > 0 & testPositiveRate < 1) # rm buggy data to allow log scales
   
+
+
 df_pr_colors <-  df_pr %>%
   group_by(state)%>%
   arrange(date, .by_group = TRUE) %>%
@@ -369,13 +373,23 @@ df_pr_colors <-  df_pr %>%
   replace(is.na(.), 0) %>%
   select(state, trend_coef, trend_color) 
 
+
+df_pr_summary <- df_states %>%
+  filter(date >  as.Date('2020-07-31') & date < as.Date('2020-11-14'))%>%
+  group_by(date) %>%
+  summarise(national_positive = sum(positiveIncrease), national_tested = sum(totalTestResultsIncrease))%>%
+  mutate(testPositiveRate = national_positive / national_tested)%>%
+  ungroup() %>%
+  summarise(testPositiveRate_mean = median(testPositiveRate), testPositiveRate_sd = mad(testPositiveRate), per95 = quantile(testPositiveRate, probs = 0.95))
+
+
 df_pr %>%
  inner_join(df_pr_colors, by = "state") %>%
  ggplot() +
     geom_smooth(mapping = aes(x = testedPopulationRate, y = testPositiveRate), color = "gray", alpha = 0.3, method = "loess", size = LINE_SIZE) +
     geom_line(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), alpha = 0.7, size = LINE_SIZE) +
     geom_point(mapping = aes(x = testedPopulationRate, y = testPositiveRate, color = trend_color), size = 1) +
-    scale_x_continuous(limits = c(0, 1.2), breaks = seq(0, 1.2, by = 0.05)) +
+    scale_x_continuous(limits = c(0, 2.5), breaks = seq(0, 2.5, by = 0.25)) +
     scale_y_continuous(limits = c(0.001, 1), trans = 'log10', breaks = c(0.001, 0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.75, 1)) +
     scale_colour_tableau() +
     facet_wrap(state ~ ., ncol = 6, scales = "free")  +
