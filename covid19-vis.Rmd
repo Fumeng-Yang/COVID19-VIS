@@ -1,12 +1,15 @@
 ---
 title: "COVID 19 - some simple data visualizations for US data"
 output: 
-  rmdformats::readthedown:
-    highlight: tango 
-    df_print: kable
-    fig_width: 20
-    fig_height: 15
-    self_contained: yes
+ rmdformats::robobook:
+    self_contained: true
+    thumbnails: true
+    lightbox: true
+    gallery: false
+    highlight: default
+    fig_width: 11
+    fig_height: 6
+    use_bookdown: TRUE
 ---
 <style type="text/css">
 .main-container {
